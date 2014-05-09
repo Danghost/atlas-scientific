@@ -1,26 +1,26 @@
 #!/usr/bin/python 
- 
+
 import datetime
-import plotly
+import plotly.plotly as py
 import serial
 import time
  
 username = 'plotly_username_here'
-api_key = 'plotly_api_key_here'
-tokens = ['token1', 'token2']
-token1 = 'token1'
-token2 = 'token2'
+api_key = 'plotly_api_key_here'# view api key here: https://plot.ly/settings
+tokens = ['token1', 'token2'] # generate stream tokens here: https://plot.ly/settings
  
-p = plotly.plotly(username, api_key)
-streams = [plotly.stream(token) for token in tokens]
- 
+py.sign_in(username, api_key)
+streams = [py.Stream(token) for token in tokens]
+for stream in streams:
+  stream.open()
+
 p.plot([
     {'x': [],
     'y': [],
     'name': 'pH',
     'type': 'scatter',
     'stream': {
-        'token': token1,
+        'token': tokens[0],
         'maxpoints': 20
         }
     },
@@ -30,7 +30,7 @@ p.plot([
     'name': 'dOxy',
     'type': 'scatter',
     'stream': {
-        'token': token2,
+        'token': tokens[1],
         'maxpoints':20
         }
     }],
@@ -87,4 +87,4 @@ while True:
     else:
         line2 = line2 + data2
         
-    time.sleep(5)
+    time.sleep(0.05)
