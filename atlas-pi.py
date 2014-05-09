@@ -1,17 +1,18 @@
 #!/usr/bin/python 
 
 import datetime
-import plotly
+import plotly.plotly as py
 import serial
  
 token = 'stream_token'
 username = 'plotly_username_here'
 api_key = 'plotly_api_key_here'
  
-p = plotly.plotly(username, api_key)
-stream = plotly.stream(token)
- 
-p.plot([
+py.sign_in(username, api_key)
+stream = py.Stream(token)
+stream.open()
+
+url = py.plot([
     {'x': [],
     'y': [],
     'type': 'scatter',
@@ -25,6 +26,7 @@ p.plot([
  
 # Serial code adapted from: https://www.atlas-scientific.com/_files/code/pi_sample_code.pdf
 print "Atlas is now Streaming to Plotly!"
+print "View your plot here: ", url
 usbport = '/dev/ttyAMA0'
 ser = serial.Serial(usbport, 38400)
 # turn on the LEDs
